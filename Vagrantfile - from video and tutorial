@@ -1,0 +1,29 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-16.04"
+  
+  #dir = File.expand_path("..", __FILE__)
+  #puts "DIR: #{dir}"	# get dir for later use install
+  # fix from https://github.com/hashicorp/vagrant/issues/9680#issuecomment-380560499
+  
+  #config.vm.provision "shell", path: File.join(dir, "script.sh")
+  
+  
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
+  
+  config.vm.provider "virtualbox" do |vb|
+	vb.gui = false
+	vb.cpus = 2
+	vb.memory = "4096"
+  end
+  
+  config.vm.provision "shell" do |shell|
+	#shell.path = File.join(dir, "jenkins.sh")
+	shell.path = "jenkins.sh"
+  end
+# use the jenkins.sh to install necessary software and to show the jenkins password
+end
+
+# edited as per video 7 and https://medium.com/@rdarida/installing-jenkins-on-localhost-with-vagrant-8aa59761bec
